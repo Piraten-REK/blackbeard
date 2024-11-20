@@ -1,0 +1,40 @@
+{
+  "name": "rss-cord",
+  "version": "0.0.1",
+  "description": "RSS Feed to Discord Bot",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "build": "rollup -c",
+    "dev": "ENVIRONMENT=DEVELOPMENT rollup -c --watch"
+  },
+  "author": {
+    "name": "PIRATEN Rhein-Erft-Kreis",
+    "url": "https://piratenpartei-rhein-erft.de",
+    "email": "info@piraten-rek.de"
+  },
+  "contributors": [
+    {
+      "name": "Mike Kühnapfel",
+      "url": "https://veyxos.de",
+      "email": "mike.kuehnapfel@piraten-rek.de"
+    }
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "@tsconfig/node-lts": "^22.0.0",
+    "rollup": "^4.27.3",
+    "tracer": "^1.3.0",
+    "ts-standard": "^12.0.2",
+    "typescript": "^5.6.3",
+    "zod": "^3.23.8"
+  },
+  "dependencies": {
+    "rss-parser": "^3.13.0"
+  }
+}
