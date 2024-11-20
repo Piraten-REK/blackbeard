@@ -6,6 +6,8 @@ var require$$1$2 = require('string_decoder');
 var require$$1$3 = require('events');
 var require$$4 = require('timers');
 var require$$3 = require('url');
+var path = require('path');
+var fs = require('fs');
 
 function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -16389,30 +16391,69 @@ var z = /*#__PURE__*/Object.freeze({
     ZodError: ZodError
 });
 
-var feedConfig = [
-	{
-		title: "KSTA",
-		url: "https://feed.ksta.de/feed/rss/region/rhein-erft/index.rss"
-	},
-	{
-		title: "Radio Erft",
-		url: "https://www.radioerft.de/thema/lokalnachrichten-1070.rss"
-	},
-	{
-		title: "WDR",
-		url: "https://www1.wdr.de/nachrichten/rheinland/uebersicht-rheinland-100.feed"
-	}
-];
-
-const configSchema = z.array(z.object({
-    title: z.string().min(1),
-    url: z.string().url()
-}));
-const feedData = configSchema.parse(feedConfig);
-const parser = new Parser();
-Promise.all(feedData.map(async (feed) => await parser.parseURL(feed.url))).then(feeds => {
-    for (const feed of feeds) {
-        console.log(feed.items[0]);
+var _a;
+class LastImportTracker {
+    static #instance = null;
+    static lastImportPath = path.resolve(__dirname, '../lastImport.json');
+    // @ts-expect-error
+    #data;
+    constructor() {
+        if (_a.#instance != null) {
+            return _a.#instance;
+        }
+        this.#data = new Map(Object.entries(this.#setUp));
+        _a.#instance = this;
     }
+    #setUp() {
+        const buffer = fs.readFileSync(_a.lastImportPath);
+        const string = buffer.toString('utf-8');
+        const json = JSON.parse(string);
+        return json;
+    }
+    getLastImport(feedLink) {
+        return this.#data.get(feedLink) ?? null;
+    }
+    async setLastImport(feedLink, uid) {
+        this.#data.set(feedLink, uid);
+        fs.writeFileSync(_a.lastImportPath, JSON.stringify(Object.fromEntries(this.#data.entries())), 'utf-8');
+    }
+}
+_a = LastImportTracker;
+
+const configPath = path.resolve(__dirname, '../config.json');
+const configJson = JSON.parse(fs.readFileSync(configPath, { encoding: 'utf8' }));
+const configSchema = z.object({
+    feeds: z.array(z.object({
+        title: z.string().min(1),
+        url: z.string().url(),
+        idKey: z.string().min(1)
+    })),
+    interval: z.number().min(30).max(1440).default(600)
 });
+const config = configSchema.parse(configJson);
+const parser = new Parser();
+const tracker = new LastImportTracker();
+function doIt() {
+    Promise.all(config.feeds.map(async (feedConf) => {
+        const feed = await parser.parseURL(feedConf.url);
+        if (feed.items.length === 0) {
+            return;
+        }
+        const lastImported = tracker.getLastImport(feedConf.url);
+        let idx = 0;
+        let item = feed.items[0];
+        let iterate = lastImported !== null && idx < feed.items.length && item[feedConf.idKey] !== lastImported;
+        console.log(item);
+        while (iterate) {
+            console.log(`[${feedConf.title}] ${item.title}<br>${item.content}<br>${item.link}`);
+            item = feed.items[++idx];
+            iterate = idx < feed.items.length && item[feedConf.idKey] !== lastImported;
+        }
+        tracker.setLastImport(feedConf.url, item[feedConf.idKey]);
+    })).catch(err => {
+        console.log(err);
+    });
+}
+doIt();
+setInterval(doIt, config.interval * 1000);
 //# sourceMappingURL=app.js.map
