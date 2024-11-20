@@ -1,4 +1,4 @@
-# RssCord
+# Blackbeard
 
 RSS-Feed to Discord Bot.
 

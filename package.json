@@ -1,5 +1,5 @@
 {
-  "name": "rss-cord",
+  "name": "blackbeard",
   "version": "0.0.1",
   "description": "RSS Feed to Discord Bot",
   "main": "dist/app.js",
