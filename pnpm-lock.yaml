@@ -28,6 +28,9 @@ devDependencies:
   '@tsconfig/node-lts':
     specifier: ^22.0.0
     version: 22.0.0
+  '@types/node':
+    specifier: ^22.9.1
+    version: 22.9.1
   rollup:
     specifier: ^4.27.3
     version: 4.27.3
@@ -423,6 +426,12 @@ packages:
 
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+    dev: true
+
+  /@types/node@22.9.1:
+    resolution: {integrity: sha512-p8Yy/8sw1caA8CdRIQBG5tiLHmxtQKObCijiAa9Ez+d4+PRffM4054xbju0msf+cvhJpnFEeNjxmVT/0ipktrg==}
+    dependencies:
+      undici-types: 6.19.8
     dev: true
 
   /@types/resolve@1.20.2:
@@ -2713,6 +2722,10 @@ packages:
       has-bigints: 1.0.2
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
+    dev: true
+
+  /undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
     dev: true
 
   /uri-js@4.4.1:
