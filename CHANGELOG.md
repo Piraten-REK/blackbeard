@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added config parser
+- Add message sending to specified discord channels
+- Add fetching and parsing of rss feeds
+- Add config parser
 - Add [license file](./LICENSE)
 - Add [ReadMe file](./README.md)
 - Add this changelog
