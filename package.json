@@ -4,7 +4,7 @@
   "description": "RSS Feed to Discord Bot",
   "main": "dist/app.js",
   "scripts": {
-    "start": "if [ ! -f 'lastImport.json' ]; then echo '{}' > lastImport.json; fi; node dist/app.js",
+    "start": "./start.sh",
     "build": "rollup -c",
     "dev": "ENVIRONMENT=DEVELOPMENT rollup -c --watch"
   },
