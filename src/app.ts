@@ -66,14 +66,14 @@ function doIt (): void {
     let iterate = lastImported !== null && idx < feed.items.length && item[feedConf.idKey] !== lastImported
     const messages: string[] = []
 
+    void tracker.setLastImport(feedConf.url, item[feedConf.idKey])
+
     while (iterate) {
       messages.push(`**[${feedConf.title}] ${item.title ?? ''}**  \n${item.content ?? ''}  \n${item.link ?? ''}`)
 
       item = feed.items[++idx]
       iterate = idx < feed.items.length && item[feedConf.idKey] !== lastImported
     }
-
-    void tracker.setLastImport(feedConf.url, item[feedConf.idKey])
 
     await Promise.all(
       messages.map(message =>

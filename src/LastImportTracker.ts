@@ -31,6 +31,10 @@ export default class LastImportTracker {
   }
 
   async setLastImport (feedLink: string, uid: string): Promise<void> {
+    if (this.#data.get(feedLink) === uid) {
+      return
+    }
+
     this.#data.set(feedLink, uid)
 
     fs.writeFileSync(
