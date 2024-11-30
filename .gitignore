@@ -1,3 +1,8 @@
 node_modules/
 config.json
 lastImport.json
+
+drizzle/
+data.sqlite
+
+*.log
